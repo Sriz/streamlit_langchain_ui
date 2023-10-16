@@ -3,7 +3,7 @@ from langchain.llms import OpenAI
 from langchain.callbacks import get_openai_callback
 from pydantic import BaseModel
 from rich import print
-import guardrails as gd
+#import guardrails as gd
 from langchain.output_parsers import GuardrailsOutputParser
 from langchain.prompts import PromptTemplate
 from langchain.llms import OpenAI
