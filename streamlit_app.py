@@ -36,15 +36,14 @@ with st.form('my_form'):
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
         generate_response(text)
-        
-guard = gd.Guard.from_pydantic(Code, prompt=text)
+        guard = gd.Guard.from_pydantic(Code, prompt=text)
 
-raw_llm_output, validated_output = guard(
-    openai.ChatCompletion.create,
-    model="gpt-3.5-turbo",
-    max_tokens=1024,
-    temperature=0.0,
-)        
+        raw_llm_output, validated_output = guard(
+            openai.ChatCompletion.create,
+            model="gpt-3.5-turbo",
+            max_tokens=1024,
+            temperature=0.0,
+        )        
 
 
 with get_openai_callback() as cb:
