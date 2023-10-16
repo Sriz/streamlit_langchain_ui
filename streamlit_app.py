@@ -24,7 +24,7 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
 
 def generate_response(text):
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    st.info(result)
+    st.info(llm(text))
 
 #def cb(text):
 #    with get_openai_callback() as cb:
