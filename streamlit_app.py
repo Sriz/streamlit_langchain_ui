@@ -40,7 +40,11 @@ def generate_response(text):
     print(f"Amount Spent: ${cb.total_cost}")
     st.info(result)
 
-
+def cb(text):
+    with get_openai_callback() as cb:
+        llm = OpenAI()
+        result = llm(text)
+        print(f"Number of Tokens used: {cb.total_tokens}")
     
 with st.form('my_form'):
     language = st.selectbox("Select a language",('Python','Java','C++'))
@@ -51,10 +55,8 @@ with st.form('my_form'):
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
         generate_response(text)
-        with get_openai_callback() as cb:
-            llm = OpenAI()
-            result = llm(text)
-            print(f"Number of Tokens used: {cb.total_tokens}")
+        cb(text)
+        
     
 
 
