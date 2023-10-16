@@ -26,5 +26,9 @@ with st.form('my_form'):
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
         generate_response(text)
-        get_cb_info(text)
+        with get_openai_callback() as cb:
+            llm = OpenAI()
+            result = llm(text)
+            print(f"Number of Tokens used: {cb.total_tokens}")
+            print(f"Amount Spent: ${cb.total_cost}")
 
