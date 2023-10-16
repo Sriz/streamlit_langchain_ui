@@ -47,8 +47,8 @@ with st.form('my_form'):
         #)        
 
 
-with get_openai_callback() as cb:
-    llm = OpenAI()
-    result = llm(text)
-    print(f"Number of Tokens used: {cb.total_tokens}")
-    print(f"Amount Spent: ${cb.total_cost}")
+#with get_openai_callback() as cb:
+#    llm = OpenAI()
+#    result = llm(text)
+#    print(f"Number of Tokens used: {cb.total_tokens}")
+#    print(f"Amount Spent: ${cb.total_cost}")
