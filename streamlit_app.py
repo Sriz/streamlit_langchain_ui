@@ -35,16 +35,13 @@ logger.info(answer)
 
 def generate_response(text):
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    result = llm(text)
-    print(f"Number of Tokens used: {cb.total_tokens}")
-    print(f"Amount Spent: ${cb.total_cost}")
     st.info(result)
 
-def cb(text):
-    with get_openai_callback() as cb:
-        llm = OpenAI()
-        result = llm(text)
-        print(f"Number of Tokens used: {cb.total_tokens}")
+#def cb(text):
+#    with get_openai_callback() as cb:
+#        llm = OpenAI()
+#        result = llm(text)
+#        print(f"Number of Tokens used: {cb.total_tokens}")
     
 with st.form('my_form'):
     language = st.selectbox("Select a language",('Python','Java','C++'))
