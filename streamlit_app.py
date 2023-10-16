@@ -8,10 +8,16 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
 
 def generate_response(text):
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    st.info(llm(prompt_text))
+    st.info(llm(text))
 
-def get_token_cost():
-    
+def get_cb_info(text):
+    with get_openai_callback() as cb:
+        llm = OpenAI()
+        result = llm(text)
+        print(f"Total Tokens: {cb.total_tokens}")
+        print(f"Prompt Tokens: {cb.prompt_tokens}")
+        print(f"Completion Tokens: {cb.completion_tokens}")
+        print(f"Total Cost (USD): ${cb.total_cost}")
 
 with st.form('my_form'):
     language = st.selectbox("Select a language",('Python','Java','C++'))
@@ -21,12 +27,6 @@ with st.form('my_form'):
         st.warning('Please enter your OpenAI API key!', icon='⚠')
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
-        with get_openai_callback() as cb:
-            llm = OpenAI()
-            result = llm("Who was the father of Mary Ball Washington?")
-            print(f"Total Tokens: {cb.total_tokens}")
-            print(f"Prompt Tokens: {cb.prompt_tokens}")
-            print(f"Completion Tokens: {cb.completion_tokens}")
-            print(f"Total Cost (USD): ${cb.total_cost}")
         generate_response(text)
+        get_cb_info(text)
 
