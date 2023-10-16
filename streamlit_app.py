@@ -19,18 +19,7 @@ st.title('Code Generator UI')
 #creating a text input for OpenAI API from user
 openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
 
-#using callback to print log
-logfile = "output.log"
 
-logger.add(logfile, colorize=True, enqueue=True)
-handler = FileCallbackHandler(logfile)
-
-llm = OpenAI()
-prompt = PromptTemplate.from_template(text)
-
-chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler], verbose=True)
-answer = chain.run(number=2)
-logger.info(answer)
 
 
 def generate_response(text):
@@ -52,6 +41,18 @@ with st.form('my_form'):
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
         generate_response(text)
+        #using callback to print log
+        #logfile = "output.log"
+        
+        #logger.add(logfile, colorize=True, enqueue=True)
+        #handler = FileCallbackHandler(logfile)
+        
+        #llm = OpenAI()
+        #prompt = PromptTemplate.from_template(text)
+        
+        #chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler], verbose=True)
+        #answer = chain.run(number=2)
+        #logger.info(answer)
 
         
     
