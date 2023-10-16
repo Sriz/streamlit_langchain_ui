@@ -17,12 +17,7 @@ def generate_response(text):
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
     st.info(llm(text))
 
-def get_cb_info(text):
-    with get_openai_callback() as cb:
-        llm = OpenAI()
-        result = llm(text)
-        print(f"Number of Tokens used: {cb.total_tokens}")
-        print(f"Amount Spent: ${cb.total_cost}")
+
 
 class Input(BaseModel):
     prompt: str
@@ -41,13 +36,19 @@ with st.form('my_form'):
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
         generate_response(text)
-        guard = gd.Guard.from_pydantic(Code, prompt=text)
-
-        raw_llm_output, validated_output = guard(
-            openai.ChatCompletion.create,
-            model="gpt-3.5-turbo",
-            max_tokens=1024,
-            temperature=0.0,
-        )
         
+guard = gd.Guard.from_pydantic(Code, prompt=text)
 
+raw_llm_output, validated_output = guard(
+    openai.ChatCompletion.create,
+    model="gpt-3.5-turbo",
+    max_tokens=1024,
+    temperature=0.0,
+)        
+
+
+with get_openai_callback() as cb:
+    llm = OpenAI()
+    result = llm(text)
+    print(f"Number of Tokens used: {cb.total_tokens}")
+    print(f"Amount Spent: ${cb.total_cost}")
