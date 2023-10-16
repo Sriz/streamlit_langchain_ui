@@ -1,3 +1,4 @@
+# downloading necessary libraries
 import streamlit as st
 from langchain.llms import OpenAI
 from langchain.callbacks import get_openai_callback
@@ -6,25 +7,40 @@ from rich import print
 from langchain.output_parsers import GuardrailsOutputParser
 from langchain.prompts import PromptTemplate
 from langchain.llms import OpenAI
+from loguru import logger
+from langchain.callbacks import FileCallbackHandler
+from langchain.chains import LLMChain
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
 
-
+# header of the UI
 st.title('Code Generator UI')
 
+#creating a text input for OpenAI API from user
 openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
+
+#using callback to print log
+logfile = "output.log"
+
+logger.add(logfile, colorize=True, enqueue=True)
+handler = FileCallbackHandler(logfile)
+
+llm = OpenAI()
+prompt = PromptTemplate.from_template(text)
+
+chain = LLMChain(llm=llm, prompt=prompt, callbacks=[handler], verbose=False)
+answer = chain.run(number=2)
+logger.info(answer)
+
 
 def generate_response(text):
     llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
-    st.info(llm(text))
+    result = llm(text)
+    print(f"Number of Tokens used: {cb.total_tokens}")
+    print(f"Amount Spent: ${cb.total_cost}")
+    st.info(result)
 
 
-
-#class Input(BaseModel):
-#   prompt: str
-    
-#class Code(BaseModel):
-#    """Generated code"""
-#    language: str
-#    code: str
     
 with st.form('my_form'):
     language = st.selectbox("Select a language",('Python','Java','C++'))
@@ -35,19 +51,10 @@ with st.form('my_form'):
     if submitted and openai_api_key.startswith('sk-'):
         text = prompt_text +' using '+language
         generate_response(text)
-        
-        #guard = gd.Guard.from_pydantic(Code, prompt=text)
-
-        #raw_llm_output, validated_output = guard(
-        #   openai.ChatCompletion.create,
-        #    model="gpt-3.5-turbo",
-        #    max_tokens=1024,
-        #    temperature=0.0,
-        #)        
+    
 
 
-#with get_openai_callback() as cb:
-#    llm = OpenAI()
-#    result = llm(text)
-#    print(f"Number of Tokens used: {cb.total_tokens}")
-#    print(f"Amount Spent: ${cb.total_cost}")
+with get_openai_callback() as cb:
+    llm = OpenAI()
+    result = llm(text)
+    print(f"Number of Tokens used: {cb.total_tokens}")
