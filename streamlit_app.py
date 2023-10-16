@@ -14,10 +14,8 @@ def get_cb_info(text):
     with get_openai_callback() as cb:
         llm = OpenAI()
         result = llm(text)
-        print(f"Total Tokens: {cb.total_tokens}")
-        print(f"Prompt Tokens: {cb.prompt_tokens}")
-        print(f"Completion Tokens: {cb.completion_tokens}")
-        print(f"Total Cost (USD): ${cb.total_cost}")
+        print(f"Number of Tokens used: {cb.total_tokens}")
+        print(f"Amount Spent: ${cb.total_cost}")
 
 with st.form('my_form'):
     language = st.selectbox("Select a language",('Python','Java','C++'))
