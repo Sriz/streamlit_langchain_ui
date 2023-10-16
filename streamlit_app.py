@@ -19,13 +19,13 @@ def generate_response(text):
 
 
 
-class Input(BaseModel):
-    prompt: str
+#class Input(BaseModel):
+#   prompt: str
     
-class Code(BaseModel):
-    """Generated code"""
-    language: str
-    code: str
+#class Code(BaseModel):
+#    """Generated code"""
+#    language: str
+#    code: str
     
 with st.form('my_form'):
     language = st.selectbox("Select a language",('Python','Java','C++'))
